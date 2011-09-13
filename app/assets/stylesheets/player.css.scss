@@ -1,0 +1,32 @@
+// Place all the styles related to the Player controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+
+#chat-window {
+  width: 700px;
+  height: 500px;
+  border:2px solid #000000;
+  position: absolute;
+  top: 100px;
+  left: 200px;
+}
+ul.message {
+  display: inline;
+  list-style-type: none;
+  li {
+    display:inline;
+  }
+}
+#chat-users {
+  width: 100px;
+  height: 200px;
+  border:2px solid #000000;
+}
+ul.user {
+  float: left;
+  display: inline;
+  list-style-type: none;
+  li {
+    display:inline;
+  }
+}

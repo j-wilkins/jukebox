@@ -1,0 +1,46 @@
+<section id="player">
+  <%= link_to 'Start Audio', 'start_audio', :class => 'html5' %>
+</section>
+
+<%= link_to 'next song', 'next_song', remote: true%>
+
+
+
+
+<script type="text/x-handlebars">
+  <div id="chat-application">
+    {{#if ChatApp.chatController.loggedIn}}
+      <div id="chat-users">
+        {{#collection contentBinding="ChatApp.userController" tagName="u2"}}
+          <ul class="user">
+            <li display="inline">
+              <img width="50" {{bindAttr src="content.gravatar"}}>
+            <li display="inline">
+              {{content.name}}
+          </ul>
+        {{/collection}}
+      </div>
+      <div id="chat-window">
+        {{#collection contentBinding="ChatApp.chatController" tagName="u1"}}
+          <ul class="message">
+            <li display="inline">
+              <img width="50" {{bindAttr src="content.gravatar"}}>
+            <li display="inline">
+              {{content.fromName}}:
+            <li display="inline">
+              {{content.message}}
+          </ul>
+        {{/collection}}
+      </div>
+      <div id="chat-entry">
+        {{view ChatApp.CreateMessageView id="new-message" placeholder="Say Something"}}
+      </div>
+    {{else}}
+      <div id="chat-logon">
+        {{view ChatApp.Name placeholder="Your Name" valueBinding="ChatApp.chatController.userName"}}
+        {{view ChatApp.Email placeholder="Your Email" valueBinding="ChatApp.chatController.userEmail"}}
+      </div>
+    {{/if}}
+</div>
+</script>
+
