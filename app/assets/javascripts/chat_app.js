@@ -26,11 +26,15 @@ ChatApp.userController = SC.ArrayProxy.create({
   },
 
   removeUser: function(userName, userEmail, gravatarUrl) {
-    var idx = ChatApp.userController.content.indexOf({name: userName,
-      email: userEmail, gravatar: gravatarUrl});
-    var tmp = this.content;
-    var tmp2 = ChatApp.userController.content
-    if(idx!=-1) visibleIds.splice(idx, 1);
+    // this is disgusting
+    var newArray = [];
+    ChatApp.userController.content.forEach(function(item){
+      if(item.name != userName &&
+        item.email != userEmail && item.gravatar != gravatarUrl) {
+        newArray.push(item);
+      }
+    });
+    ChatApp.userController.set('content', newArray);
   }
 
 });
@@ -58,7 +62,7 @@ ChatApp.chatController = SC.ArrayProxy.create({
   },
 
   login: function(){
-    $.post('chat/login', 
+    $.post('chat/login',
         {email: ChatApp.chatController.userEmail,
          name: ChatApp.chatController.userName
         },
@@ -68,10 +72,11 @@ ChatApp.chatController = SC.ArrayProxy.create({
         ChatApp.chatController.myChat.bind('message-recieved', function(message){
           ChatApp.chatController.displayMessage(message.user, message.message,
             message.gravatar);
+          setTimeout('ChatApp.chatController.scrollToBottom()', 300);
         });
         ChatApp.chatController.myChat.bind('pusher:subscription_succeeded', function(members) {
           members.each(function(member) {
-            ChatApp.userController.addUser(member.info.name, 
+            ChatApp.userController.addUser(member.info.name,
               member.info.email, member.info.gravatar);
           });
         });
@@ -81,13 +86,15 @@ ChatApp.chatController = SC.ArrayProxy.create({
         ChatApp.chatController.myChat.bind('pusher:member_removed', function(user){
           ChatApp.userController.removeUser(user.info.name, user.info.email, user.info.gravatar);
         });
-        //ChatApp.userController.addUser(
-          //ChatApp.chatController.userName,
-          //ChatApp.chatController.userEmail,
-          //ChatApp.chatController.gravatarUrl
-        //);
         ChatApp.chatController.set('loggedIn', true);
     });
+  },
+
+  scrollToBottom: function () {
+    // for some reason this is jerky. I wish scrollHeight wasn't giving
+    // me undefined because I think it's my huge value that's making this jerk.
+    //$("#chat-window").animate({scrollTop: 99999999999}, 200);
+    $("#chat-window").scrollTop(99999999999);
   },
 
   myChat: null,
