@@ -27,4 +27,13 @@ Jukebox::Application.configure do
 
   # Expands the lines which load the assets
   config.assets.debug = true
+
+  # load Pusher Conf from YAML
+  config.after_initialize do
+    conf = YAML.load(File.read(Rails.root + 'config/pusher.yml'))[Rails.env]
+    Pusher.app_id = conf[:app_id]
+    Pusher.key = conf[:key]
+    Pusher.secret = conf[:secret]
+  end
+
 end

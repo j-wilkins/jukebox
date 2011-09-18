@@ -5,3 +5,4 @@ tmp/
 .sass-cache/
 app/assets/music/*
 *.DS_Store
+config/pusher.yml
